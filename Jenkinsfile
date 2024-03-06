@@ -4,7 +4,11 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'g++ -o output your_code.cpp'
+                // Configure Maven
+                withMaven(maven: 'MavenInstallationName') {
+                    // Execute Maven clean and install
+                    sh 'mvn clean install'
+                }
             }
             post {
                 success {
@@ -19,7 +23,11 @@ pipeline {
         
         stage('Test') {
             steps {
-                sh './output'
+                // Configure Maven
+                withMaven(maven: 'MavenInstallationName') {
+                    // Execute Maven test
+                    sh 'mvn test'
+                }
             }
             post {
                 success {
@@ -31,7 +39,7 @@ pipeline {
                 }
                 always {
                     // Archive test reports
-                    // junit 'target/surefire-reports/*.xml'
+                    junit 'target/surefire-reports/*.xml'
                 }
             }
         }
@@ -39,10 +47,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 // Configure Maven
-                // withMaven(maven: 'MavenInstallationName') {
+                withMaven(maven: 'MavenInstallationName') {
                     // Execute Maven deploy
-                    // sh 'mvn deploy'
-                // }
+                    sh 'mvn deploy'
+                }
             }
             post {
                 success {
