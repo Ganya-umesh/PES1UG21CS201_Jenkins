@@ -5,7 +5,7 @@ SRN="PES1UG21CS201"
 
 # Define the file name and output executable name
 input_file="PES1UG21CS201.cpp"
-output_executable="${PES1UG21CS201}-1"
+output_executable="${SRN}-1"
 
 # Compilation command
 g++ -o $output_executable $input_file
