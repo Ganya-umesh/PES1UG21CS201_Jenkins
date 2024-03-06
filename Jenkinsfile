@@ -1,59 +1,30 @@
 pipeline {
     agent any
-    
     stages {
         stage('Build') {
             steps {
-                // Compile the .cpp file using shell script
-                sh 'bash build.sh'
-            }
-            post {
-                success {
-                    echo 'Build Stage Successful'
-                }
-                failure {
-                    echo 'Build Stage Failed'
-                    // Perform cleanup or additional actions on build failure
+                script {
+                    // Replace 'main.cpp' with the correct name of your C++ file
+                    sh 'g++ working.cpp -o output'
                 }
             }
         }
-        
         stage('Test') {
             steps {
-                // Print output of .cpp file using shell script
-                sh 'bash run.sh'
-            }
-            post {
-                success {
-                    echo 'Test Stage Successful'
-                }
-                failure {
-                    echo 'Test Stage Failed'
-                    // Perform cleanup or additional actions on test failure
+                script {
+                    sh './output'
                 }
             }
         }
-        
         stage('Deploy') {
             steps {
-                // Perform deployment actions if needed
-                // This stage is not specified in detail
-            }
-            post {
-                success {
-                    echo 'Deployment Successful'
-                }
-                failure {
-                    echo 'Deployment Failed'
-                    // Perform cleanup or additional actions on deployment failure
-                }
+                echo 'deploy'
             }
         }
     }
-    
     post {
         failure {
-            echo 'Pipeline failed'
-        }
-    }
+            error 'Pipeline failed'
+     }
+  }
 }
